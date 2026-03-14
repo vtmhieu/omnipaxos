@@ -319,7 +319,7 @@ where
     }
 
     /// get the accepted index to htis point
-    pub(crate) fn get_accepted_idx(&self) -> usize {
+    pub fn get_accepted_idx(&self) -> usize {
         self.seq_paxos.get_accepted_idx()
     }
 
