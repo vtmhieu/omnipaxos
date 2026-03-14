@@ -318,6 +318,11 @@ where
         }
     }
 
+    /// get the accepted index to htis point
+    pub(crate) fn get_accepted_idx(&self) -> usize {
+        self.seq_paxos.get_accepted_idx()
+    }
+
     /// Read entries in the range `r` in the log. Returns `None` if `r` is out of bounds.
     pub fn read_entries<R>(&self, r: R) -> Option<Vec<LogEntry<T>>>
     where

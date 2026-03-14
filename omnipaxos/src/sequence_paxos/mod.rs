@@ -147,6 +147,11 @@ where
             .expect("Failed to get suffix")
     }
 
+    /// get the accepted index to this point
+    pub fn get_accepted_idx(&self) -> usize {
+        self.internal_storage.get_accepted_idx()
+    }
+
     /// Initiates the trim process.
     /// # Arguments
     /// * `trim_idx` - Deletes all entries up to [`trim_idx`], if the [`trim_idx`] is `None` then the minimum index accepted by **ALL** servers will be used as the [`trim_idx`].
