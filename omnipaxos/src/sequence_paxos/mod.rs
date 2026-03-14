@@ -135,6 +135,18 @@ where
         self.internal_storage.get_promise()
     }
 
+    pub(crate) fn pre_store_entry(&mut self, entry: T) {
+        self.internal_storage
+            .append_entries_without_batching(vec![entry])
+            .expect("Failed to pre-store entry");
+    }
+
+    pub(crate) fn get_suffix(&mut self, from_idx: usize) {
+        self.internal_storage
+            .get_suffix(from_idx)
+            .expect("Failed to get suffix");
+    }
+
     /// Initiates the trim process.
     /// # Arguments
     /// * `trim_idx` - Deletes all entries up to [`trim_idx`], if the [`trim_idx`] is `None` then the minimum index accepted by **ALL** servers will be used as the [`trim_idx`].
