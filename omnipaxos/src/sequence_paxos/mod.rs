@@ -177,6 +177,12 @@ where
         }
     }
 
+    pub(crate) fn append_to_local_log(&mut self, entry: T) {
+        self.internal_storage
+            .append_entry_local_only(entry)
+            .expect("storage error while appending to local log");
+    }
+    
     /// Trim the log and create a snapshot. ** Note: only up to the `decided_idx` can be snapshotted **
     /// # Arguments
     /// `idx` - Snapshots all entries with index < [`idx`], if the [`idx`] is None then the decided index will be used.

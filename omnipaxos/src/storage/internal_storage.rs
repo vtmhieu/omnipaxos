@@ -310,6 +310,21 @@ where
         Ok(self.state_cache.accepted_idx)
     }
 
+    pub(crate) fn append_entry_local_only(&mut self, entry: T) -> StorageResult<()> {
+        self.storage.append_entry(entry)
+        // deliberately NOT updating state_cache.accepted_idx
+    }
+
+    // In sequence_paxos.rs
+    pub(crate) fn get_log_suffix(&self, from_idx: usize) -> StorageResult<Vec<T>> {
+        self.storage.get_suffix(from_idx)
+    }
+
+    pub(crate) fn get_log_entries(&self, from_idx: usize, to_idx: usize) -> StorageResult<Vec<T>> {
+        self.storage.get_entries(from_idx, to_idx)
+    }
+
+
     pub(crate) fn sync_log(
         &mut self,
         accepted_round: Ballot,

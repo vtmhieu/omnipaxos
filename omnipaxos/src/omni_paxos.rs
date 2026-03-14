@@ -19,7 +19,7 @@ use std::fs;
 use std::{
     error::Error,
     fmt::{Debug, Display},
-    ops::RangeBounds,
+    ops::RangeBounds, process::Command,
 };
 #[cfg(feature = "toml_config")]
 use toml;
@@ -282,6 +282,33 @@ where
             let is_accepted = self.seq_paxos.get_state().1 == Phase::Accept;
             Some((promised_pid, is_accepted))
         }
+    }
+
+    /// Appends an entry directly to the local log without going through consensus.
+    /// Note: this does not update the accepted or decided index, and the entry will not be replicated.
+    pub fn append_command_local_log(&mut self, entry: T) {
+        self.seq_paxos.append_to_local_log(entry);
+    }
+
+    /// Returns all log entries from `from_idx` (inclusive) to the end of the local log.
+    pub fn get_log_suffix(&self, from_idx: usize) -> Vec<T> {
+        self.seq_paxos
+            .internal_storage
+            .get_suffix(from_idx)
+            .expect("storage error while reading log suffix")
+    }
+
+    /// Returns all log entries in the range `[from_idx, to_idx)` from the local log.
+    pub fn get_log_entries(&self, from_idx: usize, to_idx: usize) -> Vec<T> {
+        self.seq_paxos
+            .internal_storage
+            .get_entries(from_idx, to_idx)
+            .expect("storage error while reading log entries")
+    }
+
+    /// Returns the current length of the local log.
+    pub fn get_log_len(&self) -> usize {
+        self.seq_paxos.internal_storage.get_accepted_idx()
     }
 
     /// Returns the promised ballot of this node.
