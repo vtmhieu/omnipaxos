@@ -268,14 +268,20 @@ where
         self.seq_paxos.get_compacted_idx()
     }
 
+
+    /// get the accepted index to htis point
+    pub fn get_accepted_idx(&self) -> usize {
+        self.seq_paxos.get_accepted_idx()
+    }
+
     /// Append an entry to the log locally before conesnsus process
     pub fn pre_store_entry(&mut self, entry: T) {
         self.seq_paxos.pre_store_entry(entry);
     }
 
     /// Get the suffix of the log starting from index from_idx.
-    pub fn get_suffix(&mut self, from_idx: usize) {
-        self.seq_paxos.get_suffix(from_idx);
+    pub fn get_suffix(&mut self, from_idx: usize) -> Vec<T>{
+        self.seq_paxos.get_suffix(from_idx)
     }
 
     /// Returns the ID of the current leader and whether the node's `Phase` is `Phase::Accepted`.
@@ -316,11 +322,6 @@ where
             Some(mut v) => v.pop(),
             None => None,
         }
-    }
-
-    /// get the accepted index to htis point
-    pub fn get_accepted_idx(&self) -> usize {
-        self.seq_paxos.get_accepted_idx()
     }
 
     /// Read entries in the range `r` in the log. Returns `None` if `r` is out of bounds.
