@@ -141,10 +141,10 @@ where
             .expect("Failed to pre-store entry");
     }
 
-    pub(crate) fn get_suffix(&mut self, from_idx: usize) {
+    pub(crate) fn get_suffix(&mut self, from_idx: usize) -> Vec<T> {
         self.internal_storage
             .get_suffix(from_idx)
-            .expect("Failed to get suffix");
+            .expect("Failed to get suffix")
     }
 
     /// Initiates the trim process.
